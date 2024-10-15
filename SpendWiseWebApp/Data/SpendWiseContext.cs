@@ -4,6 +4,10 @@ using spendwisebase.Models;
 namespace SpendWiseWebApp.Data
 {
     public class SpendWiseContext : DbContext {
+
+         public SpendWiseContext(DbContextOptions<SpendWiseContext> options) : base(options)
+        {
+        }
         public DbSet<Goal> Goals { get; set; }
 
         public DbSet<User> Users { get; set; }
@@ -12,6 +16,6 @@ namespace SpendWiseWebApp.Data
 
         public DbSet<Transaction> Transactions { get; set; }
 
-        public DbSet<ExpenseCategory> ExpenseCategories { get; set; } // Add this line
+        public DbSet<ExpenseCategory> ExpenseCategories { get; set; } 
     }
 }
