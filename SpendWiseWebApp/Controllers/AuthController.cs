@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using spendwisebase.Models;
@@ -11,39 +12,15 @@ namespace SpendWiseWebApp.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly IConfiguration _configuration;
+       private readonly UserManager<IdentityUser> _userManager;
+       private readonly IConfiguration _configuration;
 
-        public AuthController(IConfiguration configuration)
+        public AuthController(UserManager<IdentityUser> userManager, IConfiguration configuration)
         {
+            _userManager = userManager;
             _configuration = configuration;
         }
 
-        [HttpPost("login")]
-        public IActionResult Login([FromBody] User user)
-        {
-            
-            if (user.Username == "testuser" && user.Password == "password")
-            {
-                var claims = new[]
-                {
-                    new Claim(JwtRegisteredClaimNames.Sub, user.Username),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-                };
 
-                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
-                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-                var token = new JwtSecurityToken(
-                    _configuration["Jwt:Issuer"],
-                    _configuration["Jwt:Issuer"],
-                    claims,
-                    expires: DateTime.Now.AddMinutes(30),
-                    signingCredentials: creds);
-
-                return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(token) });
-            }
-
-            return Unauthorized();
-        }
     }
 }
