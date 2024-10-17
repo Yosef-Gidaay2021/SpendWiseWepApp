@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SpendWiseWebApp.Data;
 using spendwisebase.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SpendWiseWebApp.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
