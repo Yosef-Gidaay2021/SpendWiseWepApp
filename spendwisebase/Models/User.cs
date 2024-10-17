@@ -1,7 +1,9 @@
 namespace spendwisebase.Models;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity;
 
-public class User
+
+public class User: IdentityUser 
 {
     public int UserId { get; set; }
     public string Username { get; set; }

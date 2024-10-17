@@ -1,9 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using spendwisebase.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace SpendWiseWebApp.Data
 {
-    public class SpendWiseContext : DbContext {
+    public class SpendWiseContext : IdentityDbContext<IdentityUser>  {
 
          public SpendWiseContext(DbContextOptions<SpendWiseContext> options) : base(options){}
         public DbSet<Goal> Goals { get; set; }
