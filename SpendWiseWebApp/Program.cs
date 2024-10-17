@@ -16,6 +16,10 @@ builder.Services.AddDbContext<SpendWiseContext>(opt =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddAuthorization();
+builder.Services.AddIdentityApiEndpoints<IdentityUser>()
+    .AddEntityFrameworkStores<SpendWiseContext>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -28,6 +32,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.MapIdentityApi<IdentityUser>();
 
 app.MapControllers();
 
