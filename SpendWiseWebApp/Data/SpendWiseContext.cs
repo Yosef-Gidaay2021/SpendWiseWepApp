@@ -5,9 +5,7 @@ namespace SpendWiseWebApp.Data
 {
     public class SpendWiseContext : DbContext {
 
-         public SpendWiseContext(DbContextOptions<SpendWiseContext> options) : base(options)
-        {
-        }
+         public SpendWiseContext(DbContextOptions<SpendWiseContext> options) : base(options){}
         public DbSet<Goal> Goals { get; set; }
 
         public DbSet<User> Users { get; set; }
