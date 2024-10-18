@@ -44,12 +44,8 @@ namespace SpendWiseWebApp.Services
                 await receiptDto.File.CopyToAsync(stream);
             }
 
-            var receipt = new Receipt
-            {
-                ImagePath = filePath,
-                UploadedBy = receiptDto.UploadedBy,
-                TransactionId = receiptDto.TransactionId
-            };
+            var receipt = new Receipt(filePath, receiptDto.TransactionId, receiptDto.UploadedBy);
+            
 
             _context.Receipts.Add(receipt);
             await _context.SaveChangesAsync();
