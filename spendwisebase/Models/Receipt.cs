@@ -9,5 +9,21 @@ namespace spendwisebase.Models
 
         // Navigation property for Transaction
         public Transaction Transaction { get; set; }
+
+        public Receipt( string imagePath, int transactionId, string uploadedBy)
+        {
+            
+            if (string.IsNullOrWhiteSpace(imagePath))
+                throw new ArgumentException("ImagePath cannot be null or empty.", nameof(imagePath));
+            if (transactionId <= 0)
+                throw new ArgumentException("TransactionId must be greater than zero.", nameof(transactionId));
+            if (string.IsNullOrWhiteSpace(uploadedBy))
+                throw new ArgumentException("UploadedBy cannot be null or empty.", nameof(uploadedBy));
+
+            ImagePath = imagePath;
+            TransactionId = transactionId;
+            UploadedBy = uploadedBy;
+        }
     }
+
 }
