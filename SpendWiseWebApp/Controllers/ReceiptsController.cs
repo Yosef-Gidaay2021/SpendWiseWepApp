@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -84,6 +85,46 @@ namespace SpendWiseWebApp.Controllers
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetReceipt", new { id = receipt.ReceiptId }, receipt);
+        }
+
+        // POST: api/Receipts/upload
+        [HttpPost("upload")]
+        public async Task<IActionResult> UploadReceipt([FromForm] ReceiptUploadDto dto)
+        {
+            // Validate that a file was uploaded
+            if (dto.File == null || dto.File.Length == 0)
+            {
+                return BadRequest("No file uploaded.");
+            }
+
+            // Ensure the directory exists
+            var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
+            if (!Directory.Exists(uploadPath))
+            {
+                Directory.CreateDirectory(uploadPath);
+            }
+
+            // Generate a unique file name
+            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(dto.File.FileName);
+            var filePath = Path.Combine(uploadPath, fileName);
+
+            // Save the file to the specified path
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await dto.File.CopyToAsync(stream);
+            }
+
+            // Create a new Receipt object
+            var receipt = new Receipt();
+            receipt.ImagePath = filePath;
+            receipt.UploadedBy = dto.UploadedBy;
+            receipt.TransactionId = dto.TransactionId;
+
+            // Add the new receipt to the context
+            _context.Receipts.Add(receipt);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetReceipt), new { id = receipt.ReceiptId }, receipt);
         }
 
         // DELETE: api/Receipts/5
