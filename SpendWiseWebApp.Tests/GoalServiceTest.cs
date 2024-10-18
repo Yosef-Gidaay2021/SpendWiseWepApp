@@ -48,6 +48,65 @@ namespace SpendWiseWebApp.Tests.Services
             Assert.AreEqual(2, result.Count());
         }
 
-        // more test methods here...
+        [TestMethod]
+        public async Task GetGoalByIdAsync_ReturnsGoal()
+        {
+            var result = await _goalService.GetGoalByIdAsync(1);
+            Assert.IsNotNull(result);
+            Assert.AreEqual(1, result.GoalId);
+        }
+
+        [TestMethod]
+        public async Task GetGoalByIdAsync_ReturnsNullWhenGoalNotFound()
+        {
+            var result = await _goalService.GetGoalByIdAsync(99);
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
+        public async Task AddGoalAsync_AddsGoal()
+        {
+            var goal = new Goal { GoalId = 3, Name = "Goal3" };
+            var result = await _goalService.AddGoalAsync(goal);
+            Assert.IsNotNull(result);
+            Assert.AreEqual(3, result.GoalId);
+        }
+
+        [TestMethod]
+        public async Task AddGoalAsync_ThrowsExceptionWhenGoalIsNull()
+        {
+            await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => _goalService.AddGoalAsync(null));
+        }
+
+        [TestMethod]
+        public async Task UpdateGoalAsync_UpdatesGoal()
+        {
+            var goal = await _goalService.GetGoalByIdAsync(1);
+            goal.Name = "UpdatedGoal";
+            var result = await _goalService.UpdateGoalAsync(1, goal);
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        public async Task UpdateGoalAsync_ReturnsFalseWhenIdMismatch()
+        {
+            var goal = new Goal { GoalId = 1, Name = "UpdatedGoal" };
+            var result = await _goalService.UpdateGoalAsync(2, goal);
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        public async Task DeleteGoalAsync_DeletesGoal()
+        {
+            var result = await _goalService.DeleteGoalAsync(1);
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        public async Task DeleteGoalAsync_ReturnsFalseWhenGoalNotFound()
+        {
+            var result = await _goalService.DeleteGoalAsync(99);
+            Assert.IsFalse(result);
+        }
     }
 }
