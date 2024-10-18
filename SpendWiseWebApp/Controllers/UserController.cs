@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace SpendWiseWebApp.Controllers
 {
-    [Authorize]
+   
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
