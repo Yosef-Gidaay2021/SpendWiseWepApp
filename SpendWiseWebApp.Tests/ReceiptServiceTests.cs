@@ -104,6 +104,18 @@ namespace SpendWiseWebApp.Tests.Services
             _mockContext.Verify(m => m.Receipts.Remove(It.IsAny<Receipt>()), Times.Once());
             _mockContext.Verify(m => m.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once());
         }
+        
+        [Fact]
+        public async Task DeleteReceiptAsync_InvalidId_ShouldReturnFalse()
+        {
+            // Act
+            var result = await _receiptService.DeleteReceiptAsync(99);
+
+            // Assert
+            Assert.False(result);
+            _mockContext.Verify(m => m.Receipts.Remove(It.IsAny<Receipt>()), Times.Never());
+            _mockContext.Verify(m => m.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never());
+        }
 
     }
 }
