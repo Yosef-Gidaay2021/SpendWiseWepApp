@@ -115,10 +115,7 @@ namespace SpendWiseWebApp.Controllers
             }
 
             // Create a new Receipt object
-            var receipt = new Receipt();
-            receipt.ImagePath = filePath;
-            receipt.UploadedBy = dto.UploadedBy;
-            receipt.TransactionId = dto.TransactionId;
+            var receipt = new Receipt(filePath, dto.TransactionId, dto.UploadedBy);
 
             // Add the new receipt to the context
             _context.Receipts.Add(receipt);
